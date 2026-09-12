@@ -1,0 +1,34 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+.DS_Store
+
+# Java / Maven
+**/target/
+**/.mvn/wrapper/maven-wrapper.jar
+
+# Node
+**/node_modules/
+**/dist/
+**/.vite/
+apps/admin-web/dist/
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+**/application-local.yml
+**/application-prod.yml
+!**/application-prod.yml.example
+
+# Mini program
+apps/miniapp/project.private.config.json
+
+# Local tools
+.tools/
+
+# Logs
+*.log
+logs/

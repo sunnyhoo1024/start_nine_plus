@@ -1,0 +1,24 @@
+page {
+  background: #f5f7fa;
+  color: #303133;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.card {
+  background: #fff;
+  margin: 24rpx;
+  padding: 24rpx;
+  border-radius: 16rpx;
+}
+
+.btn-primary {
+  background: #1f2d3d;
+  color: #fff;
+  border-radius: 8rpx;
+}
+
+.muted {
+  color: #909399;
+  font-size: 24rpx;
+}

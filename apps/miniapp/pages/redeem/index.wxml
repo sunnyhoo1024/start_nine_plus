@@ -1,0 +1,20 @@
+<view class="page">
+  <view wx:if="{{!skus.length}}" class="card muted">暂无可兑换商品</view>
+
+  <view class="card sku" wx:for="{{skus}}" wx:key="id">
+    <image wx:if="{{item.imageUrl}}" class="cover" src="{{item.imageUrl}}" mode="aspectFill" />
+    <view class="info">
+      <view class="name">{{item.name}}</view>
+      <view class="desc">{{item.description || ''}}</view>
+      <view class="meta">{{item.pointsPrice}} 积分 · 库存 {{item.stock}}</view>
+      <button
+        class="btn-primary"
+        size="mini"
+        loading="{{redeemingId === item.id}}"
+        bindtap="onRedeem"
+        data-id="{{item.id}}"
+        data-name="{{item.name}}"
+      >立即兑换</button>
+    </view>
+  </view>
+</view>

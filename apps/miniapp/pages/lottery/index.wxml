@@ -1,0 +1,16 @@
+<view class="page">
+  <view wx:if="{{!activities.length}}" class="card muted">暂无进行中的活动</view>
+
+  <view class="card activity" wx:for="{{activities}}" wx:key="id">
+    <view class="name">{{item.name}}</view>
+    <view class="desc">{{item.description || '暂无描述'}}</view>
+    <view class="meta">消耗 {{item.costPoints}} 积分</view>
+    <button class="btn-primary" loading="{{drawingId === item.id}}" bindtap="onDraw" data-id="{{item.id}}">立即抽奖</button>
+  </view>
+
+  <view wx:if="{{result}}" class="card result">
+    <view class="result-title">抽奖结果</view>
+    <view class="result-name">{{result.prizeName || result.name}}</view>
+    <view class="muted">类型：{{result.prizeType || result.type}} · 积分：{{result.pointsValue || result.points || 0}}</view>
+  </view>
+</view>

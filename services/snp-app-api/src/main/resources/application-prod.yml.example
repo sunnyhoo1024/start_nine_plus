@@ -1,0 +1,32 @@
+# Copy to application-prod.yml (do not commit real secrets)
+# SPRING_PROFILES_ACTIVE=prod
+
+server:
+  port: ${SERVER_PORT:8082}
+
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:start_nine_plus}?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USER:snp}
+    password: ${MYSQL_PASSWORD:snp_change_me}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+
+snp:
+  jwt:
+    secret: ${JWT_SECRET:change-me-snp-jwt-secret-key-32bytes!!}
+    expire-hours: ${JWT_EXPIRE_HOURS:720}
+  cors:
+    allowed-origins: ${CORS_ORIGINS:*}
+  wechat:
+    app-id: ${WECHAT_APP_ID:}
+    secret: ${WECHAT_SECRET:}
+    mock: ${WECHAT_MOCK:false}
+
+logging:
+  level:
+    com.snp: INFO

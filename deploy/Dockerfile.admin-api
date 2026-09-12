@@ -1,0 +1,33 @@
+# Multi-stage build for snp-admin-api
+# Build context must be services/ (parent pom lives there).
+
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /build
+
+COPY pom.xml .
+COPY snp-common/pom.xml snp-common/pom.xml
+COPY snp-service/pom.xml snp-service/pom.xml
+COPY snp-admin-api/pom.xml snp-admin-api/pom.xml
+COPY snp-app-api/pom.xml snp-app-api/pom.xml
+
+# Prefetch dependencies (best-effort when module sources are incomplete)
+RUN mvn -B -q -DskipTests dependency:go-offline || true
+
+COPY snp-common snp-common
+COPY snp-service snp-service
+COPY snp-admin-api snp-admin-api
+COPY snp-app-api snp-app-api
+
+RUN mvn -B -pl snp-admin-api -am package -DskipTests
+
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+
+RUN groupadd -r snp && useradd -r -g snp snp
+COPY --from=build /build/snp-admin-api/target/snp-admin-api-*.jar /app/app.jar
+RUN chown -R snp:snp /app
+USER snp
+
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+EXPOSE 8081
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]

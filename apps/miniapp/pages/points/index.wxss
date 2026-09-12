@@ -1,0 +1,48 @@
+.balance {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.balance .label {
+  color: #909399;
+}
+
+.balance .value {
+  flex: 1;
+  font-size: 48rpx;
+  font-weight: 700;
+}
+
+.section-title {
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.biz {
+  margin-bottom: 4rpx;
+}
+
+.amount {
+  font-weight: 600;
+}
+
+.plus {
+  color: #67c23a;
+}
+
+.minus {
+  color: #f56c6c;
+}

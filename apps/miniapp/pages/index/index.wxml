@@ -1,0 +1,30 @@
+<view class="page">
+  <swiper
+    wx:if="{{banners.length}}"
+    class="banner"
+    indicator-dots
+    autoplay
+    circular
+    interval="4000"
+  >
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <image class="banner-img" src="{{item.imageUrl}}" mode="aspectFill" bindtap="onBannerTap" data-link="{{item.linkUrl}}" />
+    </swiper-item>
+  </swiper>
+
+  <view class="card intro">
+    <view class="title">{{introTitle}}</view>
+    <view class="text">{{introText}}</view>
+  </view>
+
+  <view class="card balance">
+    <view class="label">我的积分</view>
+    <view class="value">{{balance}}</view>
+  </view>
+
+  <view class="entries">
+    <view class="entry" bindtap="goLottery">去抽奖</view>
+    <view class="entry" bindtap="goRedeem">去兑换</view>
+    <view class="entry" bindtap="goPoints">积分明细</view>
+  </view>
+</view>
