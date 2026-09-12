@@ -14,6 +14,9 @@
 **/dist/
 **/.vite/
 apps/admin-web/dist/
+apps/miniapp/dist/
+apps/miniapp/unpackage/
+
 
 # Env / secrets
 .env

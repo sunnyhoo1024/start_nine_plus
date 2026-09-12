@@ -1,0 +1,22 @@
+{
+  "name": "Start Nine Plus",
+  "appid": "__UNI__START9PLUS",
+  "description": "内容/活动配置驱动 + 积分抽奖兑换",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "minified": true
+    },
+    "usingComponents": true,
+    "lazyCodeLoading": "requiredComponents"
+  },
+  "uniStatistics": {
+    "enable": false
+  },
+  "vueVersion": "3"
+}

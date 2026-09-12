@@ -119,16 +119,33 @@ npm run build
 
 ---
 
-## 4. 微信小程序（DevTools）
+## 4. uni-app 微信小程序
 
-1. 打开微信开发者工具 → 导入项目 → 目录选择 `apps/miniapp`
-2. AppID：测试号或正式 AppId（与 `.env` 中 `WECHAT_MINI_APPID` 对应）
+小程序工程为 **uni-app Vue3（Vite）**，目录 `apps/miniapp`。
+
+```bash
+cd apps/miniapp
+npm install --registry=https://registry.npmjs.org
+npm run dev:mp-weixin
+```
+
+编译产物在 `apps/miniapp/dist/dev/mp-weixin`。
+
+1. 打开微信开发者工具 → 导入项目 → **选择上述 `dist/dev/mp-weixin` 目录**（不要直接选源码根目录当运行目录）
+2. AppID：测试号或正式 AppId；在 `src/manifest.json` → `mp-weixin.appid` 填写
 3. 本地调试：
-   - 详情 → 本地设置 →勾选「不校验合法域名……」（仅开发）
-   - 将请求 baseURL 指向 `http://127.0.0.1:8082/app/api`（或本机局域网 IP，真机预览时需可访问）
-4. 本地默认 `WECHAT_MOCK=true`：跳过真实 `code2Session`，便于无登录联调；联调正式登录时改为 `false` 并配置真实密钥
+   - 详情 → 本地设置 → 勾选「不校验合法域名……」（仅开发）
+   - `App.vue` 中 `globalData.baseUrl` 默认 `http://127.0.0.1:8082`；真机预览改局域网 IP，生产改为 HTTPS 合法域名
+4. 本地默认 `WECHAT_MOCK=true`：跳过真实 `code2Session`；正式登录改为 `false` 并配置密钥
 
-页面目录约定：`pages/index`、`lottery`、`points`、`redeem`、`profile` 等。
+正式构建：
+
+```bash
+npm run build:mp-weixin
+# 产物：dist/build/mp-weixin
+```
+
+页面：`pages/index`、`lottery`、`redeem`、`points`、`profile`。
 
 ---
 

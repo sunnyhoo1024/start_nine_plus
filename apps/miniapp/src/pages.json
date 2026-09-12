@@ -1,0 +1,78 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "首页"
+      }
+    },
+    {
+      "path": "pages/lottery/index",
+      "style": {
+        "navigationBarTitleText": "抽奖"
+      }
+    },
+    {
+      "path": "pages/redeem/index",
+      "style": {
+        "navigationBarTitleText": "兑换"
+      }
+    },
+    {
+      "path": "pages/points/index",
+      "style": {
+        "navigationBarTitleText": "积分"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "Start Nine Plus",
+    "navigationBarBackgroundColor": "#1f2d3d",
+    "backgroundColor": "#f5f7fa"
+  },
+  "tabBar": {
+    "color": "#909399",
+    "selectedColor": "#1f2d3d",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/tab/home.png",
+        "selectedIconPath": "static/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/lottery/index",
+        "text": "抽奖",
+        "iconPath": "static/tab/lottery.png",
+        "selectedIconPath": "static/tab/lottery-active.png"
+      },
+      {
+        "pagePath": "pages/redeem/index",
+        "text": "兑换",
+        "iconPath": "static/tab/redeem.png",
+        "selectedIconPath": "static/tab/redeem-active.png"
+      },
+      {
+        "pagePath": "pages/points/index",
+        "text": "积分",
+        "iconPath": "static/tab/points.png",
+        "selectedIconPath": "static/tab/points-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/tab/profile.png",
+        "selectedIconPath": "static/tab/profile-active.png"
+      }
+    ]
+  }
+}

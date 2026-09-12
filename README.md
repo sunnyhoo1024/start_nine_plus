@@ -23,7 +23,7 @@
 start_nine_plus/
 ├── apps/
 │   ├── admin-web/          # 管理端 Web（Vue/Vite）
-│   └── miniapp/            # 微信小程序
+│   └── miniapp/            # uni-app（Vue3，编译为微信小程序）
 ├── services/               # Maven 多模块（父 POM）
 │   ├── snp-common/         # 公共模型与工具
 │   ├── snp-service/        # 领域服务与持久化
@@ -50,7 +50,7 @@ start_nine_plus/
 | 后端 | Java 17、Spring Boot 3.2、MyBatis-Plus、JJWT、Hutool |
 | 数据 | MySQL 8、Redis 7 |
 | 管理端 | Node 20、Vue + Vite（admin-web） |
-| C 端 | 微信小程序原生 |
+| C 端 | uni-app Vue3（编译微信小程序 mp-weixin） |
 | 部署 | Docker Compose、Nginx 反代、可选 OSS/CDN |
 
 ---
