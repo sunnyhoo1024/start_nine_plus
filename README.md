@@ -37,7 +37,8 @@ start_nine_plus/
 │   └── nginx/nginx.conf
 └── docs/
     ├── LOCAL_DEV.md
-    └── PRODUCTION_CHECKLIST.md
+    ├── PRODUCTION_CHECKLIST.md
+    └── GITHUB_PUSH.md
 ```
 
 ---
@@ -107,7 +108,7 @@ docker compose --env-file ../.env up -d --build
 
 ## 默认账号
 
-初始化 SQL 会写入超级管理员（**上线后请立即修改密码**）：
+首次启动 **admin-api** 时，`AdminBootstrap` 会自动创建超级管理员（**上线后请立即修改密码**）：
 
 | 端 | 账号 | 密码 |
 |----|------|------|
@@ -121,6 +122,7 @@ docker compose --env-file ../.env up -d --build
 
 - [本地开发](docs/LOCAL_DEV.md)
 - [生产上线检查清单](docs/PRODUCTION_CHECKLIST.md)
+- [推送到 GitHub](docs/GITHUB_PUSH.md)
 
 ---
 
