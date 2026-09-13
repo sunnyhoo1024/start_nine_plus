@@ -62,9 +62,10 @@ docker compose version
 
 仓库根目录复制环境变量：
 
+仓库根目录已有 `.env`（本地）。按需编辑密码等：
+
 ```bash
-cp .env.example .env
-# 按需修改密码；本地可保持 WECHAT_MOCK=true
+# 直接编辑 .env；预发/生产用 .env.stg / .env.prod
 ```
 
 ---
@@ -85,7 +86,7 @@ docker compose ps
 # mysql 健康、3306 可连；redis 6379 可连
 ```
 
-默认（与 `.env.example` 一致）：
+默认（与 `.env` 一致）：
 
 - MySQL：`127.0.0.1:3306`，库 `start_nine_plus`，用户 `snp` / 密码见 `.env`
 - 首次启动会挂载执行 `sql/schema.sql`（含管理员种子数据）
@@ -153,7 +154,7 @@ npm run dev
 确保 `.env` 中：
 
 ```text
-CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 ```
 
 并将前端 API baseURL 指向 `http://127.0.0.1:8081/admin/api`（以项目内实际配置为准）。
@@ -222,7 +223,7 @@ docker compose --env-file ../.env up -d --build
 |------|------|
 | MySQL 连不上 | 等 healthcheck 通过；检查端口占用与 `.env` 密码 |
 | 库是空的 | 确认是否误删卷后又未挂载 `schema.sql`；或手动 `source sql/schema.sql` |
-| CORS 报错 | 把前端 origin 写入 `CORS_ALLOWED_ORIGINS` 并重启 admin-api |
+| CORS 报错 | 把前端 origin 写入 `CORS_ORIGINS` 并重启 admin-api |
 | 小程序真机访问不到本机 API | 用局域网 IP，并关闭仅监听 127.0.0.1 的限制 |
 | Redis 需要密码 | `.env` 设置 `REDIS_PASSWORD`，与 API 配置一致 |
 

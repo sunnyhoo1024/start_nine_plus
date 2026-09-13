@@ -10,7 +10,7 @@
 - [ ] 小程序类目与业务一致（积分、抽奖、兑换相关类目已开通）
 - [ ] 已开通所需接口权限（登录 `code2Session`、用户信息等）
 - [ ] 生产环境关闭 Mock：`WECHAT_MOCK=false`
-- [ ] `WECHAT_MINI_APPID` / `WECHAT_MINI_SECRET` 使用正式账号密钥，且仅保存在服务器环境变量中
+- [ ] `WECHAT_APP_ID` / `WECHAT_SECRET` 使用正式账号密钥，且仅保存在服务器环境变量中
 - [ ] 管理员账号与开发者权限已分配，避免单人持有全部密钥
 
 ---
@@ -47,7 +47,7 @@
 
 ### MySQL
 
-- [ ] 生产库名、账号与 `.env` 一致（参考根目录 `.env.example`）
+- [ ] 生产库名、账号与 `.env.prod` 一致
 - [ ] root 密码强随机，应用仅使用业务账号（最小权限）
 - [ ] 已执行 `sql/schema.sql`（或容器首次初始化挂载）
 - [ ] 开启自动备份（每日全量 + binlog），并验证过恢复演练
@@ -83,7 +83,13 @@
 
 ## 6. 环境变量对照表
 
-从仓库根目录 `.env.example` 复制为 `.env`（**勿提交 Git**），生产必须全部核对：
+生产使用仓库中的 `.env.prod`（可提交占位配置；**上线前在服务器改成真实密钥**，或由 CI 注入覆盖）：
+
+```bash
+# 编辑 .env.prod 后
+docker compose --env-file ../.env.prod up -d --build
+# 或：./scripts/dc.sh prod up -d --build
+```
 
 | 变量 | 说明 | 生产要求 |
 |------|------|----------|
@@ -96,17 +102,18 @@
 | `REDIS_HOST` | Redis 主机 | 内网 / `redis` |
 | `REDIS_PORT` | 端口 | `6379` |
 | `REDIS_PASSWORD` | Redis 密码 | **必须设置** |
-| `ADMIN_JWT_SECRET` | 管理端 JWT | ≥32 位随机串，与开发环境不同 |
-| `APP_JWT_SECRET` | C 端 JWT | ≥32 位随机串，与管理端不同 |
-| `WECHAT_MINI_APPID` | 小程序 AppId | 正式号 |
-| `WECHAT_MINI_SECRET` | 小程序 Secret | 正式号，定期轮换 |
+| `ADMIN_JWT_SECRET` | 管理端 JWT（compose 注入为 `JWT_SECRET`） | ≥32 位随机串 |
+| `APP_JWT_SECRET` | C 端 JWT（compose 注入为 `JWT_SECRET`） | ≥32 位随机串，与管理端不同 |
+| `JWT_SECRET` | 本机 `mvn` 运行时使用 | 可与 `ADMIN_JWT_SECRET` 相同 |
+| `WECHAT_APP_ID` | 小程序 AppId | 正式号（原文档名 WECHAT_MINI_APPID 已废弃） |
+| `WECHAT_SECRET` | 小程序 Secret | 正式号 |
 | `WECHAT_MOCK` | 跳过真实微信登录 | **必须 `false`** |
 | `OSS_ENDPOINT` | OSS Endpoint | 生产填齐 |
 | `OSS_ACCESS_KEY_ID` | AK | 最小权限子账号 |
 | `OSS_ACCESS_KEY_SECRET` | SK | 保密 |
 | `OSS_BUCKET` | Bucket 名 | 生产桶 |
 | `OSS_PUBLIC_BASE_URL` | 公网访问前缀/CDN 域名 | HTTPS |
-| `CORS_ALLOWED_ORIGINS` | 管理端 CORS | 仅正式管理端域名 |
+| `CORS_ORIGINS` | 管理端 CORS | 仅正式管理端域名（如 `https://admin.example.com`） |
 
 API 模块可参考：
 
@@ -175,14 +182,15 @@ API 模块可参考：
 
 ```bash
 cd deploy
-cp ../.env.example ../.env   # 编辑为生产值
-docker compose --env-file ../.env up -d --build
+# 确认 ../.env.prod 已改为生产值
+docker compose --env-file ../.env.prod up -d --build
 ```
 
 - [ ] `http(s)://你的域名/` 可打开管理端
 - [ ] `/admin/api/`、`/app/api/` 经 Nginx 反代正常
 - [ ] MySQL 初始化数据（含管理员种子）存在
-- [ ] 密钥、`.env`、`application-prod.yml` **未**进入 Git
+- [ ] 生产真实密钥已在服务器 / CI 配置；未把生产 Secret 明文依赖在公开仓库默认值上
+- [ ] 若使用本地 `application-prod.yml`，确认 **未** 误提交
 
 ---
 

@@ -4,7 +4,7 @@
 
 仓库：[https://github.com/sunnyhoo1024/start_nine_plus](https://github.com/sunnyhoo1024/start_nine_plus)
 
-> **安全提示**：密钥与生产配置不要提交到 Git。请使用根目录 `.env.example` 复制为 `.env`，以及各 API 模块的 `application-prod.yml.example` → `application-prod.yml`（二者均已在 `.gitignore` 中忽略）。
+> **安全提示**：仓库中的 `.env` / `.env.stg` / `.env.prod` 仅放占位配置，供本机与流水线按环境选用。**真实密钥**请在服务器或 CI 密钥管理中覆盖，勿把生产 Secret 明文长期写进 Git。`application-prod.yml` 仍建议本地生成且已在 `.gitignore` 中。
 
 ---
 
@@ -59,11 +59,17 @@ start_nine_plus/
 
 ### 1. 环境变量
 
-```bash
-cp .env.example .env
-```
+仓库已包含按环境划分的文件（可直接改）：
 
-本地可保持 `WECHAT_MOCK=true`。
+| 文件 | 用途 |
+|------|------|
+| `.env` | 本地开发（`WECHAT_MOCK=true` 即可） |
+| `.env.stg` | 预发 / 体验 |
+| `.env.prod` | 生产 |
+
+```bash
+# 按需编辑对应文件中的密码、JWT、微信、CORS 等
+```
 
 ### 2. 启动 MySQL / Redis
 
@@ -79,7 +85,7 @@ docker compose --env-file ../.env up -d mysql redis
 
 ### 3. 启动 API（宿主机）
 
-`mvn` 不会自动读仓库根目录的 `.env`；本地默认已与 `.env.example` 对齐（用户 `snp`）。若你改过密码，先导出环境变量再启动：
+`mvn` 不会自动读仓库根目录的 `.env`；本地默认已与 `.env` 对齐（用户 `snp`）。若你改过密码，先导出环境变量再启动：
 
 ```bash
 set -a && source .env && set +a
@@ -146,6 +152,7 @@ docker compose --env-file ../.env up -d --build
 ### 运维与联调
 
 - [本地开发](docs/LOCAL_DEV.md)
+- [宝塔方案 B 部署](docs/DEPLOY_BAOTA.md)
 - [生产上线检查清单](docs/PRODUCTION_CHECKLIST.md)
 - [推送到 GitHub](docs/GITHUB_PUSH.md)
 

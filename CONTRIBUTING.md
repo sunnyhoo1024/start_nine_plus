@@ -17,7 +17,7 @@
 
 - 默认分支：`main`
 - 功能开发：`feature/<简短说明>`，合并回 `main`
-- 不要把密钥、`.env`、`application-prod.yml` 提交进 Git
+- `.env` / `.env.stg` / `.env.prod` 可提交占位配置；**不要**把生产真实 Secret 明文写进仓库。本地私有覆盖用 `.env.local`（已忽略）。不要提交 `application-prod.yml` 中的真实密钥。
 
 ## 提交信息
 

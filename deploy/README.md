@@ -14,17 +14,25 @@
 
 ## 使用
 
-```bash
-# 在仓库根目录准备 .env
-cp ../.env.example ../.env   # 若在 deploy/ 下执行，路径按实际调整
-cd deploy
-cp ../.env.example ../.env
+多环境文件（根目录，**已纳入 Git**；流水线用 `--env-file` 选择）：
 
+| 文件 | 用途 |
+|------|------|
+| `.env` | 本地开发 |
+| `.env.stg` | 预发 / 体验机 |
+| `.env.prod` | 生产 |
+
+```bash
+cd deploy
 # 仅基础设施（日常开发推荐）
 docker compose --env-file ../.env up -d mysql redis
 
-# 全套（构建镜像较慢）
-docker compose --env-file ../.env up -d --build
+# 预发 / 宝塔方案 B
+docker compose --env-file ../.env.stg up -d --build mysql redis admin-api app-api
+
+# 助手脚本
+./scripts/dc.sh stg up -d --build mysql redis admin-api app-api
+./scripts/dc.sh prod up -d --build
 ```
 
 访问：
@@ -43,7 +51,12 @@ docker compose --env-file ../.env up -d --build
 ## 约束
 
 - **禁止**把真实生产密钥写进 Compose 或镜像；用 `env_file` / 编排平台密钥
-- 生产务必 HTTPS、备案、安全组仅开 80/443；DB/Redis 不对公网
+- 生产务必 HTTPS、备案、安全组仅开 80/443；DB/Redis/API 默认只绑定 `127.0.0.1`
+- **宝塔方案 B**（不起 Compose nginx，用宝塔反代）：见 [../docs/DEPLOY_BAOTA.md](../docs/DEPLOY_BAOTA.md)
+  ```bash
+  ./scripts/dc.sh stg up -d --build mysql redis admin-api app-api
+  # 或：docker compose --env-file ../.env.stg up -d --build mysql redis admin-api app-api
+  ```
 - `schema.sql` 只在 MySQL **数据卷首次初始化**时执行；重建库需 `docker compose down -v`（会清空数据）
 - 修改 Nginx 后重建 `nginx` 服务或挂载热更（按部署方式）
 

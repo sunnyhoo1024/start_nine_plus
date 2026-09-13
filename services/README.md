@@ -28,7 +28,7 @@ mvn -pl snp-app-api -am spring-boot:run
 mvn -DskipTests package
 ```
 
-环境变量见仓库根目录 `.env.example`（数据源、Redis、JWT、微信、CORS）。
+环境变量见仓库根目录 `.env` / `.env.stg` / `.env.prod`（数据源、Redis、JWT、微信、CORS）。
 
 默认管理员由 `AdminBootstrap` 创建：`admin` / `admin123`（上线务必改密）。
 
@@ -37,7 +37,7 @@ mvn -DskipTests package
 1. **积分**：只通过 `PointsService.changePoints` 记账；禁止直接改 `points_account.balance` 凑数  
 2. **抽奖 / 兑换**：事务内扣积分 + 扣库存；取消兑换按实现退回积分  
 3. **CMS / 活动**：`status` + 时间窗控制上线；C 端不返回奖品权重等敏感字段  
-4. **密钥**：`WECHAT_MINI_SECRET`、JWT、DB 密码只放环境变量 / 本地 yml，不入库  
+4. **密钥**：`WECHAT_SECRET`、JWT、DB 密码只放环境变量 / 本地 yml，不入库  
 5. **分层**：管理能力进 `admin-api`；C 端只调 `app-api`
 
 ## 配置约定

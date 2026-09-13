@@ -22,8 +22,8 @@ apps/miniapp/dist/
 apps/miniapp/unpackage/
 
 
-# Env / secrets
-.env
+# Env：允许提交 .env / .env.stg / .env.prod（占位配置，供流水线选用）
+# 仅忽略本地私有覆盖
 .env.local
 .env.*.local
 **/application-local.yml
