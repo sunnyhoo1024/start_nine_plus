@@ -3,6 +3,7 @@ package com.snp.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.snp.common.api.ErrorCode;
 import com.snp.common.enums.PointsBizType;
 import com.snp.common.exception.BizException;
 import com.snp.entity.PointsAccount;
@@ -63,13 +64,13 @@ public class PointsServiceImpl implements PointsService {
         PointsAccount account = getOrCreateAccount(userId);
         long newBalance = account.getBalance() + changeAmount;
         if (newBalance < 0) {
-            throw new BizException("积分不足");
+            throw new BizException(ErrorCode.POINTS_INSUFFICIENT);
         }
         account.setBalance(newBalance);
         account.setUpdatedAt(LocalDateTime.now());
         int updated = pointsAccountMapper.updateById(account);
         if (updated == 0) {
-            throw new BizException("积分账户更新冲突，请重试");
+            throw new BizException(ErrorCode.CONFLICT, "积分账户更新冲突，请重试");
         }
 
         PointsLedger ledger = new PointsLedger();

@@ -1,6 +1,7 @@
 package com.snp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.snp.common.api.ErrorCode;
 import com.snp.common.exception.BizException;
 import com.snp.common.util.JwtUtil;
 import com.snp.dto.AdminLoginResult;
@@ -26,10 +27,10 @@ public class AuthAdminServiceImpl implements AuthAdminService {
         AdminUser user = adminUserMapper.selectOne(new LambdaQueryWrapper<AdminUser>()
                 .eq(AdminUser::getUsername, username));
         if (user == null || user.getStatus() == null || user.getStatus() != 1) {
-            throw new BizException("用户名或密码错误");
+            throw new BizException(ErrorCode.AUTH_FAILED, "用户名或密码错误");
         }
         if (!passwordEncoder.matches(password, user.getPasswordHash())) {
-            throw new BizException("用户名或密码错误");
+            throw new BizException(ErrorCode.AUTH_FAILED, "用户名或密码错误");
         }
         List<String> permissions = adminUserMapper.selectPermissionCodes(user.getId());
         List<String> roles = adminUserMapper.selectRoleCodes(user.getId());

@@ -3,6 +3,7 @@ package com.snp.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.snp.common.api.ErrorCode;
 import com.snp.common.enums.PointsBizType;
 import com.snp.common.enums.PrizeType;
 import com.snp.common.enums.PublishStatus;
@@ -49,7 +50,7 @@ public class LotteryServiceImpl implements LotteryService {
     public LotteryActivity getActivity(Long id) {
         LotteryActivity activity = lotteryActivityMapper.selectById(id);
         if (activity == null) {
-            throw new BizException("活动不存在");
+            throw new BizException(ErrorCode.NOT_FOUND, "活动不存在");
         }
         return activity;
     }
@@ -176,14 +177,14 @@ public class LotteryServiceImpl implements LotteryService {
                 .eq(LotteryPrize::getStatus, 1)
                 .and(w -> w.eq(LotteryPrize::getStock, -1).or().gt(LotteryPrize::getStock, 0)));
         if (candidates.isEmpty()) {
-            throw new BizException("暂无可抽奖品");
+            throw new BizException(ErrorCode.LOTTERY_NO_PRIZE);
         }
 
         LotteryPrize prize = weightedRandom(candidates);
         if (prize.getStock() != null && prize.getStock() > 0) {
             int dec = lotteryPrizeMapper.decrementStock(prize.getId());
             if (dec == 0) {
-                throw new BizException("奖品库存不足，请重试");
+                throw new BizException(ErrorCode.STOCK_INSUFFICIENT, "奖品库存不足，请重试");
             }
         }
 
@@ -213,14 +214,14 @@ public class LotteryServiceImpl implements LotteryService {
 
     private void validateActivityOnline(LotteryActivity activity) {
         if (activity.getStatus() == null || activity.getStatus() != PublishStatus.ONLINE.getCode()) {
-            throw new BizException("活动未上线");
+            throw new BizException(ErrorCode.ACTIVITY_UNAVAILABLE, "活动未上线");
         }
         LocalDateTime now = LocalDateTime.now();
         if (activity.getStartAt() != null && now.isBefore(activity.getStartAt())) {
-            throw new BizException("活动未开始");
+            throw new BizException(ErrorCode.ACTIVITY_UNAVAILABLE, "活动未开始");
         }
         if (activity.getEndAt() != null && now.isAfter(activity.getEndAt())) {
-            throw new BizException("活动已结束");
+            throw new BizException(ErrorCode.ACTIVITY_UNAVAILABLE, "活动已结束");
         }
     }
 
@@ -230,7 +231,7 @@ public class LotteryServiceImpl implements LotteryService {
                     .eq(LotteryRecord::getUserId, userId)
                     .eq(LotteryRecord::getActivityId, activity.getId()));
             if (total != null && total >= activity.getTotalLimit()) {
-                throw new BizException("已达活动总抽奖次数上限");
+                throw new BizException(ErrorCode.LOTTERY_LIMIT, "已达活动总抽奖次数上限");
             }
         }
         if (activity.getDailyLimit() != null && activity.getDailyLimit() > 0) {
@@ -241,7 +242,7 @@ public class LotteryServiceImpl implements LotteryService {
                     .eq(LotteryRecord::getActivityId, activity.getId())
                     .between(LotteryRecord::getCreatedAt, start, end));
             if (daily != null && daily >= activity.getDailyLimit()) {
-                throw new BizException("今日抽奖次数已用完");
+                throw new BizException(ErrorCode.LOTTERY_LIMIT, "今日抽奖次数已用完");
             }
         }
     }

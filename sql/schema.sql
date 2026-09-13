@@ -1,5 +1,6 @@
 CREATE DATABASE IF NOT EXISTS start_nine_plus DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE start_nine_plus;
+SET NAMES utf8mb4;
 
 -- Admin RBAC
 CREATE TABLE IF NOT EXISTS admin_user (
@@ -185,6 +186,6 @@ FROM DUAL
 WHERE NOT EXISTS (SELECT 1 FROM cms_banner LIMIT 1);
 
 INSERT INTO cms_block (code, title, content_json, status)
-SELECT 'home_intro', '首页介绍', JSON_OBJECT('text', '用积分抽奖、兑换好礼'), 1
+SELECT 'home_intro', '首页介绍', CAST('{"text":"用积分抽奖、兑换好礼"}' AS CHAR CHARACTER SET utf8mb4), 1
 FROM DUAL
 WHERE NOT EXISTS (SELECT 1 FROM cms_block WHERE code = 'home_intro');

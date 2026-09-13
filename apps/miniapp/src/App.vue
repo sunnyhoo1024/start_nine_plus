@@ -12,22 +12,6 @@ export default {
 }
 </script>
 
-<style>
-page {
-  background: #f5f7fa;
-  color: #303133;
-  font-size: 28rpx;
-}
-.card {
-  background: #fff;
-  border-radius: 16rpx;
-  margin: 24rpx;
-  padding: 24rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
-}
-.btn-primary {
-  background: #1f2d3d;
-  color: #fff;
-  border-radius: 12rpx;
-}
+<style lang="less">
+@import './styles/neu.less';
 </style>

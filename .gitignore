@@ -1,9 +1,14 @@
 # IDE
 .idea/
 *.iml
-.vscode/
 *.swp
 .DS_Store
+
+# VS Code：忽略工作区缓存，保留推荐扩展与统一设置
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json.example
 
 # Java / Maven
 **/target/

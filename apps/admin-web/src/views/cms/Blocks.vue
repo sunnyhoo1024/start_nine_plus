@@ -114,7 +114,13 @@ async function onSave() {
   }
   saving.value = true
   try {
-    const payload = { code: form.code, title: form.title, contentJson, status: form.status }
+    const payload = {
+      code: form.code,
+      title: form.title,
+      // Keep as JSON string so backend String field always accepts it
+      contentJson: contentJson == null ? null : JSON.stringify(contentJson),
+      status: form.status
+    }
     if (form.id) {
       await updateBlock(form.id, payload)
     } else {

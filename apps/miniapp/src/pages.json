@@ -1,47 +1,63 @@
 {
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^SnpToast$": "@/components/SnpToast/SnpToast.vue"
+    }
+  },
   "pages": [
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "首页"
+        "navigationBarTitleText": "START NINE+",
+        "navigationBarBackgroundColor": "#e0e0e0",
+        "navigationBarTextStyle": "black"
       }
     },
     {
       "path": "pages/lottery/index",
       "style": {
-        "navigationBarTitleText": "抽奖"
+        "navigationBarTitleText": "星光抽奖",
+        "navigationBarBackgroundColor": "#e0e0e0",
+        "navigationBarTextStyle": "black"
       }
     },
     {
       "path": "pages/redeem/index",
       "style": {
-        "navigationBarTitleText": "兑换"
+        "navigationBarTitleText": "积分兑换",
+        "navigationBarBackgroundColor": "#e0e0e0",
+        "navigationBarTextStyle": "black"
       }
     },
     {
       "path": "pages/points/index",
       "style": {
-        "navigationBarTitleText": "积分"
+        "navigationBarTitleText": "我的积分",
+        "navigationBarBackgroundColor": "#e0e0e0",
+        "navigationBarTextStyle": "black"
       }
     },
     {
       "path": "pages/profile/index",
       "style": {
-        "navigationBarTitleText": "我的"
+        "navigationBarTitleText": "我的",
+        "navigationBarBackgroundColor": "#e0e0e0",
+        "navigationBarTextStyle": "black"
       }
     }
   ],
   "globalStyle": {
-    "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "Start Nine Plus",
-    "navigationBarBackgroundColor": "#1f2d3d",
-    "backgroundColor": "#f5f7fa"
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "START NINE+",
+    "navigationBarBackgroundColor": "#e0e0e0",
+    "backgroundColor": "#e0e0e0"
   },
   "tabBar": {
-    "color": "#909399",
-    "selectedColor": "#1f2d3d",
-    "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "color": "#7a7a7a",
+    "selectedColor": "#ff4d3a",
+    "backgroundColor": "#e0e0e0",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",

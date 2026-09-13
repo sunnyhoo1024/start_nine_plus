@@ -4,6 +4,7 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.snp.common.api.ErrorCode;
 import com.snp.common.enums.PointsBizType;
 import com.snp.common.enums.PublishStatus;
 import com.snp.common.enums.RedeemOrderStatus;
@@ -88,23 +89,23 @@ public class RedeemServiceImpl implements RedeemService {
         }
         RedeemSku sku = getSku(skuId);
         if (sku.getStatus() == null || sku.getStatus() != PublishStatus.ONLINE.getCode()) {
-            throw new BizException("商品未上线");
+            throw new BizException(ErrorCode.REDEEM_UNAVAILABLE, "商品未上线");
         }
         LocalDateTime now = LocalDateTime.now();
         if (sku.getStartAt() != null && now.isBefore(sku.getStartAt())) {
-            throw new BizException("兑换未开始");
+            throw new BizException(ErrorCode.REDEEM_UNAVAILABLE, "兑换未开始");
         }
         if (sku.getEndAt() != null && now.isAfter(sku.getEndAt())) {
-            throw new BizException("兑换已结束");
+            throw new BizException(ErrorCode.REDEEM_UNAVAILABLE, "兑换已结束");
         }
         if (sku.getStock() == null || sku.getStock() < quantity) {
-            throw new BizException("库存不足");
+            throw new BizException(ErrorCode.STOCK_INSUFFICIENT);
         }
 
         long cost = sku.getPointsPrice() * quantity;
         int dec = redeemSkuMapper.decrementStock(skuId, quantity);
         if (dec == 0) {
-            throw new BizException("库存不足，请重试");
+            throw new BizException(ErrorCode.STOCK_INSUFFICIENT, "库存不足，请重试");
         }
 
         String orderNo = "R" + IdUtil.getSnowflakeNextIdStr();

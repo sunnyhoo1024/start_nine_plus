@@ -1,6 +1,7 @@
 package com.snp.app.exception;
 
 import com.snp.common.api.ApiResponse;
+import com.snp.common.api.ErrorCode;
 import com.snp.common.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,13 +30,13 @@ public class GlobalExceptionHandler {
         } else if (e instanceof BindException be && be.getBindingResult().getFieldError() != null) {
             message = be.getBindingResult().getFieldError().getDefaultMessage();
         }
-        return ApiResponse.fail(message);
+        return ApiResponse.fail(ErrorCode.BAD_REQUEST, message);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<Void> handleOther(Exception e) {
         log.error("Unhandled error", e);
-        return ApiResponse.fail("系统异常");
+        return ApiResponse.fail(ErrorCode.INTERNAL);
     }
 }

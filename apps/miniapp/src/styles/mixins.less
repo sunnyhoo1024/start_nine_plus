@@ -1,0 +1,43 @@
+@import './variables.less';
+
+.neu-convex(@blur: 24rpx; @spread: 10rpx) {
+  background: @neu-bg;
+  border-radius: @neu-radius;
+  box-shadow: @spread @spread @blur @neu-shadow, (-@spread) (-@spread) @blur @neu-light;
+}
+
+.neu-concave(@blur: 16rpx; @spread: 8rpx) {
+  background: @neu-bg;
+  border-radius: @neu-radius;
+  box-shadow: inset @spread @spread @blur @neu-shadow, inset (-@spread) (-@spread) @blur @neu-light;
+}
+
+.neu-press() {
+  box-shadow: inset 6rpx 6rpx 12rpx @neu-shadow, inset -6rpx -6rpx 12rpx @neu-light;
+  transform: scale(0.98);
+}
+
+.neu-btn-base() {
+  background: @neu-bg;
+  color: @neu-dark;
+  border: none;
+  border-radius: 999rpx;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 8rpx 8rpx 18rpx @neu-shadow, -8rpx -8rpx 18rpx @neu-light;
+
+  &::after {
+    border: none;
+  }
+
+  &:active {
+    .neu-press();
+  }
+}
+
+.neu-btn-accent() {
+  .neu-btn-base();
+  background: linear-gradient(145deg, #ff6a57, @neu-accent-deep);
+  color: #fff;
+  box-shadow: 8rpx 8rpx 18rpx #c9a8a3, -6rpx -6rpx 16rpx @neu-light;
+}

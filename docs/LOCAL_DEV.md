@@ -8,9 +8,57 @@
 |------|----------|
 | JDK | 17+ |
 | Maven | 3.9+ |
-| Node.js | 20+ |
-| Docker / Docker Compose | 近期稳定版 |
+| Node.js | 20+（见仓库根目录 `.nvmrc`） |
+| **Docker Desktop**（或兼容的 Docker Engine + Compose 插件） | 近期稳定版 |
 | 微信开发者工具 | 最新稳定版 |
+
+### 若提示 `command not found: docker`
+
+本机可能已有 `/Applications/Docker.app`，但 **未完成特权安装**（`install config`），且 `docker` 未进 PATH，引擎也未启动。请在系统「终端.app」执行：
+
+```bash
+cd /path/to/start_nine_plus
+bash scripts/setup-docker-desktop.sh
+```
+
+脚本会：`sudo install config`、写入 PATH、启动 Docker Desktop，并等待引擎就绪。
+
+临时手动用法：
+
+```bash
+export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"
+# 先打开 Docker Desktop，等菜单栏图标就绪后再：
+cd deploy
+docker compose --env-file ../.env up -d mysql redis
+```
+
+---
+### 通用安装说明
+
+说明 **本机未安装 Docker**，或已安装但未启动 / 未加入 PATH。仓库里的 `docker compose ...` 命令本身没问题。
+
+**macOS 推荐安装 Docker Desktop：**
+
+1. 打开 https://www.docker.com/products/docker-desktop/ 下载 Apple Silicon / Intel 对应安装包  
+2. 安装并打开 Docker Desktop，等到菜单栏图标显示 **Running**  
+3. 新开一个终端，确认：
+
+```bash
+docker --version
+docker compose version
+```
+
+也可用更轻量的 [OrbStack](https://orbstack.dev/)（安装后同样提供 `docker` / `docker compose` 命令）。
+
+> 本机若残留 **2018 年旧 Homebrew**（`active_support` / Ruby 报错），请在系统「终端.app」执行：
+> ```bash
+> bash scripts/fix-homebrew.sh
+> ```
+> 该脚本会先确保 Xcode Command Line Tools，再卸载旧 brew 并安装官方新版。Cursor 内无法输入 sudo，须在本机终端跑。
+>
+> 若只想尽快起 MySQL/Redis，也可跳过 brew，直接安装 [Docker Desktop](https://www.docker.com/products/docker-desktop/) / [OrbStack](https://orbstack.dev/)。
+
+确认 Docker 可用后，再继续下面的「仅启动 MySQL + Redis」。
 
 仓库根目录复制环境变量：
 

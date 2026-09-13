@@ -30,7 +30,8 @@ public final class AppAuthContext {
     public static Long requireUserId() {
         Long id = currentUserId();
         if (id == null) {
-            throw new com.snp.common.exception.BizException(401, "未登录");
+            throw new com.snp.common.exception.BizException(
+                    com.snp.common.api.ErrorCode.UNAUTHORIZED);
         }
         return id;
     }

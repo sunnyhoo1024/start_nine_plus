@@ -1,0 +1,10 @@
+node_modules
+dist
+unpackage
+target
+coverage
+*.min.js
+package-lock.json
+pnpm-lock.yaml
+apps/miniapp/dist
+apps/admin-web/dist

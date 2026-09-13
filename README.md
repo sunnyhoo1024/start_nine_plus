@@ -45,13 +45,13 @@ start_nine_plus/
 
 ## 技术栈
 
-| 层级 | 技术 |
-|------|------|
-| 后端 | Java 17、Spring Boot 3.2、MyBatis-Plus、JJWT、Hutool |
-| 数据 | MySQL 8、Redis 7 |
-| 管理端 | Node 20、Vue + Vite（admin-web） |
-| C 端 | uni-app Vue3（编译微信小程序 mp-weixin） |
-| 部署 | Docker Compose、Nginx 反代、可选 OSS/CDN |
+| 层级   | 技术                                                 |
+| ------ | ---------------------------------------------------- |
+| 后端   | Java 17、Spring Boot 3.2、MyBatis-Plus、JJWT、Hutool |
+| 数据   | MySQL 8、Redis 7                                     |
+| 管理端 | Node 20、Vue + Vite（admin-web）                     |
+| C 端   | uni-app Vue3（编译微信小程序 mp-weixin）             |
+| 部署   | Docker Compose、Nginx 反代、可选 OSS/CDN             |
 
 ---
 
@@ -67,16 +67,25 @@ cp .env.example .env
 
 ### 2. 启动 MySQL / Redis
 
+需已安装并**正在运行** [Docker Desktop](https://www.docker.com/products/docker-desktop/)（或 OrbStack）。若终端提示 `command not found: docker`，先安装 Docker，再用下面命令：
+
 ```bash
+docker --version   # 应能输出版本号
 cd deploy
 docker compose --env-file ../.env up -d mysql redis
 ```
 
+说明见 [docs/LOCAL_DEV.md](docs/LOCAL_DEV.md)。
+
 ### 3. 启动 API（宿主机）
 
+`mvn` 不会自动读仓库根目录的 `.env`；本地默认已与 `.env.example` 对齐（用户 `snp`）。若你改过密码，先导出环境变量再启动：
+
 ```bash
+set -a && source .env && set +a
 cd services
 mvn -pl snp-admin-api -am spring-boot:run
+# 另开终端同样 source .env 后：
 mvn -pl snp-app-api -am spring-boot:run
 ```
 
@@ -110,8 +119,8 @@ docker compose --env-file ../.env up -d --build
 
 首次启动 **admin-api** 时，`AdminBootstrap` 会自动创建超级管理员（**上线后请立即修改密码**）：
 
-| 端 | 账号 | 密码 |
-|----|------|------|
+| 端       | 账号    | 密码       |
+| -------- | ------- | ---------- |
 | 管理后台 | `admin` | `admin123` |
 
 小程序用户通过微信登录创建，无固定账号；本地 `WECHAT_MOCK=true` 时可用 Mock 登录联调。
@@ -119,6 +128,23 @@ docker compose --env-file ../.env up -d --build
 ---
 
 ## 文档
+
+### 子项目 README
+
+- [apps/admin-web](apps/admin-web/README.md)
+- [apps/miniapp](apps/miniapp/README.md)
+- [services](services/README.md) · [约束](services/CONSTRAINTS.md)
+- [deploy](deploy/README.md)
+- [sql](sql/README.md)
+- [docs](docs/README.md)
+
+### 协作与工程约束
+
+- [CONTRIBUTING.md](CONTRIBUTING.md) — 分支、提交、编码约定
+- `.editorconfig` / `.gitattributes` / `.nvmrc` / `.prettierrc.json`
+- `.vscode/extensions.json` — 推荐扩展
+
+### 运维与联调
 
 - [本地开发](docs/LOCAL_DEV.md)
 - [生产上线检查清单](docs/PRODUCTION_CHECKLIST.md)

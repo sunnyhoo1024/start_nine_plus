@@ -1,0 +1,20 @@
+# 复制为 launch.json 后按本机路径调整；示例仅作参考
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "AdminApiApplication",
+      "request": "launch",
+      "mainClass": "com.snp.admin.AdminApiApplication",
+      "projectName": "snp-admin-api"
+    },
+    {
+      "type": "java",
+      "name": "AppApiApplication",
+      "request": "launch",
+      "mainClass": "com.snp.app.AppApiApplication",
+      "projectName": "snp-app-api"
+    }
+  ]
+}

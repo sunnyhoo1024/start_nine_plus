@@ -1,0 +1,114 @@
+@import './variables.less';
+@import './mixins.less';
+
+// Global keyframes
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12rpx);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes spin-wheel {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes kenburns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.12) translate(-2%, -1%);
+  }
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-20rpx) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(420rpx) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+page {
+  background: @neu-bg;
+  color: @neu-dark;
+  font-size: 28rpx;
+  min-height: 100%;
+}
+
+.page {
+  min-height: 100vh;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.neu-out {
+  .neu-convex();
+}
+
+.neu-in {
+  .neu-concave();
+}
+
+.neu-btn {
+  .neu-btn-base();
+}
+
+.neu-btn-accent {
+  .neu-btn-accent();
+}
+
+.neu-btn-press {
+  .neu-press();
+}
+
+.brand-mark {
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  font-style: italic;
+}
