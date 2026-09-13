@@ -142,7 +142,6 @@ docker compose --env-file ../.env up -d --build
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) — 分支、提交、编码约定
 - `.editorconfig` / `.gitattributes` / `.nvmrc` / `.prettierrc.json`
-- `.vscode/extensions.json` — 推荐扩展
 
 ### 运维与联调
 
