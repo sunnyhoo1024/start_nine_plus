@@ -26,10 +26,11 @@
 
 ## 3. 域名与 HTTPS
 
-- [ ] 已购买并解析生产域名（例如 `api.example.com`、`admin.example.com`）
+- [ ] 生产主站 `https://www.starnine.cn/` 与 `https://starnine.cn/` 已解析并绑定宝塔站点（根域可重定向到 www）
 - [ ] 全站 HTTPS（证书有效、自动续期，如 Let’s Encrypt / 云厂商证书）
-- [ ] 管理端与 C 端 API 域名策略明确：
-  - 推荐：同一域名不同路径（Nginx：`/admin/api`、`/app/api`），或独立子域名
+- [ ] 管理端使用同源 `/admin/api/*`；小程序使用 `https://www.starnine.cn/app/api/*`
+- [ ] 宝塔主站保留路径反代：`/admin/api/` → `127.0.0.1:8081`，`/app/api/` → `127.0.0.1:8082`
+- [ ] `http://api.starnine.cn/` 当前仅 HTTP，不用于生产 Web 或小程序请求；若后续切换 API 子域名，须先配置 HTTPS 和微信合法域名
 - [ ] 强制 HTTP → HTTPS 跳转
 - [ ] HSTS（可选，上线稳定后再开）
 
@@ -91,29 +92,29 @@ docker compose --env-file ../.env.prod up -d --build
 # 或：./scripts/dc.sh prod up -d --build
 ```
 
-| 变量 | 说明 | 生产要求 |
-|------|------|----------|
-| `MYSQL_HOST` | MySQL 主机 | 内网地址或 Compose 服务名 `mysql` |
-| `MYSQL_PORT` | 端口 | 默认 `3306` |
-| `MYSQL_DATABASE` | 库名 | `start_nine_plus` |
-| `MYSQL_USER` | 业务账号 | 非 root |
-| `MYSQL_PASSWORD` | 业务密码 | 强密码 |
-| `MYSQL_ROOT_PASSWORD` | root 密码（Compose 初始化用） | 强密码，仅运维掌握 |
-| `REDIS_HOST` | Redis 主机 | 内网 / `redis` |
-| `REDIS_PORT` | 端口 | `6379` |
-| `REDIS_PASSWORD` | Redis 密码 | **必须设置** |
-| `ADMIN_JWT_SECRET` | 管理端 JWT（compose 注入为 `JWT_SECRET`） | ≥32 位随机串 |
-| `APP_JWT_SECRET` | C 端 JWT（compose 注入为 `JWT_SECRET`） | ≥32 位随机串，与管理端不同 |
-| `JWT_SECRET` | 本机 `mvn` 运行时使用 | 可与 `ADMIN_JWT_SECRET` 相同 |
-| `WECHAT_APP_ID` | 小程序 AppId | 正式号（原文档名 WECHAT_MINI_APPID 已废弃） |
-| `WECHAT_SECRET` | 小程序 Secret | 正式号 |
-| `WECHAT_MOCK` | 跳过真实微信登录 | **必须 `false`** |
-| `OSS_ENDPOINT` | OSS Endpoint | 生产填齐 |
-| `OSS_ACCESS_KEY_ID` | AK | 最小权限子账号 |
-| `OSS_ACCESS_KEY_SECRET` | SK | 保密 |
-| `OSS_BUCKET` | Bucket 名 | 生产桶 |
-| `OSS_PUBLIC_BASE_URL` | 公网访问前缀/CDN 域名 | HTTPS |
-| `CORS_ORIGINS` | 管理端 CORS | 仅正式管理端域名（如 `https://admin.example.com`） |
+| 变量                    | 说明                                      | 生产要求                                      |
+| ----------------------- | ----------------------------------------- | --------------------------------------------- |
+| `MYSQL_HOST`            | MySQL 主机                                | 内网地址或 Compose 服务名 `mysql`             |
+| `MYSQL_PORT`            | 端口                                      | 默认 `3306`                                   |
+| `MYSQL_DATABASE`        | 库名                                      | `start_nine_plus`                             |
+| `MYSQL_USER`            | 业务账号                                  | 非 root                                       |
+| `MYSQL_PASSWORD`        | 业务密码                                  | 强密码                                        |
+| `MYSQL_ROOT_PASSWORD`   | root 密码（Compose 初始化用）             | 强密码，仅运维掌握                            |
+| `REDIS_HOST`            | Redis 主机                                | 内网 / `redis`                                |
+| `REDIS_PORT`            | 端口                                      | `6379`                                        |
+| `REDIS_PASSWORD`        | Redis 密码                                | **必须设置**                                  |
+| `ADMIN_JWT_SECRET`      | 管理端 JWT（compose 注入为 `JWT_SECRET`） | ≥32 位随机串                                  |
+| `APP_JWT_SECRET`        | C 端 JWT（compose 注入为 `JWT_SECRET`）   | ≥32 位随机串，与管理端不同                    |
+| `JWT_SECRET`            | 本机 `mvn` 运行时使用                     | 可与 `ADMIN_JWT_SECRET` 相同                  |
+| `WECHAT_APP_ID`         | 小程序 AppId                              | 正式号（原文档名 WECHAT_MINI_APPID 已废弃）   |
+| `WECHAT_SECRET`         | 小程序 Secret                             | 正式号                                        |
+| `WECHAT_MOCK`           | 跳过真实微信登录                          | **必须 `false`**                              |
+| `OSS_ENDPOINT`          | OSS Endpoint                              | 生产填齐                                      |
+| `OSS_ACCESS_KEY_ID`     | AK                                        | 最小权限子账号                                |
+| `OSS_ACCESS_KEY_SECRET` | SK                                        | 保密                                          |
+| `OSS_BUCKET`            | Bucket 名                                 | 生产桶                                        |
+| `OSS_PUBLIC_BASE_URL`   | 公网访问前缀/CDN 域名                     | HTTPS                                         |
+| `CORS_ORIGINS`          | 管理端 CORS                               | `https://www.starnine.cn,https://starnine.cn` |
 
 API 模块可参考：
 
@@ -128,7 +129,7 @@ API 模块可参考：
 
 微信公众平台 → 开发 → 开发管理 → 开发设置：
 
-- [ ] **request 合法域名**：配置生产 API 域名（如 `https://api.example.com`），须 HTTPS、已备案
+- [ ] **request 合法域名**：`https://www.starnine.cn`，须 HTTPS、已备案
 - [ ] **uploadFile 合法域名**（若小程序上传）：与 OSS 或上传网关域名一致
 - [ ] **downloadFile 合法域名**：CDN / OSS 公网域名
 - [ ] **业务域名**（若使用 web-view）：已配置并完成校验文件
@@ -186,8 +187,9 @@ cd deploy
 docker compose --env-file ../.env.prod up -d --build
 ```
 
-- [ ] `http(s)://你的域名/` 可打开管理端
+- [ ] `https://www.starnine.cn/` 可打开管理端；`https://starnine.cn/` 可访问同站或正确重定向
 - [ ] `/admin/api/`、`/app/api/` 经 Nginx 反代正常
+- [ ] 前端仅本地和生产环境；小程序 `npm run build:mp-weixin` 加载 `apps/miniapp/.env.production`，不再使用 STG 构建
 - [ ] MySQL 初始化数据（含管理员种子）存在
 - [ ] 生产真实密钥已在服务器 / CI 配置；未把生产 Secret 明文依赖在公开仓库默认值上
 - [ ] 若使用本地 `application-prod.yml`，确认 **未** 误提交

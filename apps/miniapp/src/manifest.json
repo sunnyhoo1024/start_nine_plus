@@ -13,7 +13,11 @@
       "minified": true
     },
     "usingComponents": true,
-    "lazyCodeLoading": "requiredComponents"
+    "lazyCodeLoading": "requiredComponents",
+    "navigateToMiniProgramAppIdList": [
+      "wx1c0ae3adb97ad0e2",
+      "wx3dcca19d0aa51755"
+    ]
   },
   "uniStatistics": {
     "enable": false

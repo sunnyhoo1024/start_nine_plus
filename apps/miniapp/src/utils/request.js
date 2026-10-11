@@ -1,6 +1,6 @@
 import { showToast } from './toast'
 
-const DEFAULT_BASE = 'http://127.0.0.1:8082'
+const DEFAULT_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8082'
 
 /** 与后端 ErrorCode 对齐 */
 export const ApiCode = {

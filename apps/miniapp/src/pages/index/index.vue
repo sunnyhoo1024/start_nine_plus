@@ -105,32 +105,28 @@ const introText = ref('用积分抽奖、兑换好礼')
 const balance = ref('--')
 const bannerIndex = ref(0)
 
-const fallbackBanners = [
+/** 首页固定跳转其它小程序体验版；CMS Banner 接在后面 */
+const partnerBanners = [
   {
-    title: '本周热门：星光转盘',
-    emoji: '🌟',
-    gradient: 'linear-gradient(135deg, #ff7a66 0%, #ff4d3a 55%, #c93b2c 100%)'
+    title: 'STG星开心',
+    emoji: '✨',
+    gradient: 'linear-gradient(135deg, #ff7a66 0%, #ff4d3a 55%, #c93b2c 100%)',
+    linkUrl: 'mp://wx1c0ae3adb97ad0e2?envVersion=trial'
   },
   {
-    title: '把积分变成小确幸',
-    emoji: '🍟',
-    gradient: 'linear-gradient(135deg, #ffb347 0%, #ffcc33 50%, #ff8c42 100%)'
-  },
-  {
-    title: '软粘土宇宙营业中',
-    emoji: '🪐',
-    gradient: 'linear-gradient(135deg, #6ee7b7 0%, #3ecf8e 50%, #2aa876 100%)'
+    title: '星巴克',
+    emoji: '☕',
+    gradient: 'linear-gradient(135deg, #00704a 0%, #1e3932 55%, #006241 100%)',
+    linkUrl: 'mp://wx3dcca19d0aa51755?envVersion=trial'
   }
 ]
 
 const displayBanners = computed(() => {
-  if (banners.value.length) {
-    return banners.value.map((b) => ({
-      ...b,
-      title: b.title || '活动进行中'
-    }))
-  }
-  return fallbackBanners
+  const cms = banners.value.map((b) => ({
+    ...b,
+    title: b.title || '活动进行中'
+  }))
+  return [...partnerBanners, ...cms]
 })
 
 function applyHome(data) {
@@ -168,6 +164,36 @@ function onBannerChange(e) {
   bannerIndex.value = e.detail.current || 0
 }
 
+function parseMiniProgramLink(link) {
+  if (!link || typeof link !== 'string') return null
+  let appId = ''
+  let query = ''
+  if (link.startsWith('mp://') || link.startsWith('miniprogram://')) {
+    const rest = link.replace(/^miniprogram:\/\//, '').replace(/^mp:\/\//, '')
+    const qIndex = rest.indexOf('?')
+    appId = qIndex >= 0 ? rest.slice(0, qIndex) : rest
+    query = qIndex >= 0 ? rest.slice(qIndex + 1) : ''
+  } else if (/^wx[0-9a-fA-F]{16}$/.test(link.trim())) {
+    appId = link.trim()
+  } else {
+    return null
+  }
+  const params = {}
+  if (query) {
+    query.split('&').forEach((pair) => {
+      const eq = pair.indexOf('=')
+      const k = eq >= 0 ? pair.slice(0, eq) : pair
+      const v = eq >= 0 ? pair.slice(eq + 1) : ''
+      if (k) params[decodeURIComponent(k)] = decodeURIComponent(v || '')
+    })
+  }
+  return {
+    appId,
+    path: params.path || '',
+    envVersion: params.envVersion || 'trial'
+  }
+}
+
 function onBannerTap(item) {
   const link = item && item.linkUrl
   if (!link) {
@@ -177,6 +203,18 @@ function onBannerTap(item) {
   if (link.startsWith('/pages/')) {
     uni.navigateTo({ url: link }).catch(() => {
       uni.switchTab({ url: link })
+    })
+    return
+  }
+  const mp = parseMiniProgramLink(link)
+  if (mp) {
+    uni.navigateToMiniProgram({
+      appId: mp.appId,
+      path: mp.path,
+      envVersion: mp.envVersion,
+      fail: () => {
+        showToast({ title: '暂无法打开该小程序', type: 'error' })
+      }
     })
   }
 }
@@ -419,7 +457,9 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 10rpx 10rpx 20rpx #c9b89a, -8rpx -8rpx 18rpx #fff;
+  box-shadow:
+    10rpx 10rpx 20rpx #c9b89a,
+    -8rpx -8rpx 18rpx #fff;
 }
 .float {
   animation: float-y 3.2s ease-in-out infinite;
@@ -461,7 +501,9 @@ onShow(() => {
   height: 64rpx;
   border-radius: 50%;
   background: @neu-bg;
-  box-shadow: 6rpx 6rpx 12rpx @neu-shadow, -6rpx -6rpx 12rpx @neu-light;
+  box-shadow:
+    6rpx 6rpx 12rpx @neu-shadow,
+    -6rpx -6rpx 12rpx @neu-light;
   display: flex;
   align-items: center;
   justify-content: center;

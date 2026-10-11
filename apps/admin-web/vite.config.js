@@ -13,7 +13,8 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/admin/api': {
-        target: 'http://127.0.0.1:8081',
+        // target: 'http://127.0.0.1:8081',
+        target: 'https://www.starnine.cn',
         changeOrigin: true
       }
     }

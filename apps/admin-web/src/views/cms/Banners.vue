@@ -32,7 +32,13 @@
           <el-input v-model="form.imageUrl" />
         </el-form-item>
         <el-form-item label="跳转链接">
-          <el-input v-model="form.linkUrl" />
+          <el-input
+            v-model="form.linkUrl"
+            placeholder="本小程序页 /pages/... 或其它小程序 mp://AppID?envVersion=trial"
+          />
+          <div class="form-tip">
+            例：/pages/lottery/index ；跳转体验版：mp://wx1c0ae3adb97ad0e2?envVersion=trial
+          </div>
         </el-form-item>
         <el-form-item label="排序">
           <el-input-number v-model="form.sortOrder" :min="0" />
@@ -148,5 +154,11 @@ onMounted(load)
   margin-bottom: 12px;
   display: flex;
   gap: 8px;
+}
+.form-tip {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #909399;
+  line-height: 1.4;
 }
 </style>

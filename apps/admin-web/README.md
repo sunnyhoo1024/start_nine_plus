@@ -21,8 +21,8 @@ npm install
 npm run dev
 ```
 
-- 本地地址：http://localhost:5173  
-- Vite 已将 `/admin/api` 代理到 `127.0.0.1:8081`  
+- 本地地址：http://localhost:5173
+- Vite 已将 `/admin/api` 代理到 `127.0.0.1:8081`
 - 默认账号：`admin` / `admin123`（由 admin-api 启动时创建）
 
 ```bash
@@ -30,6 +30,12 @@ npm run build    # 产物 dist/
 npm run preview  # 预览构建结果
 npm run lint     # ESLint（若已安装依赖）
 ```
+
+## 生产地址
+
+仅使用本地和生产两套环境。生产 Web 部署在 `https://www.starnine.cn/`，`https://starnine.cn/` 可作为同站入口或重定向到 www 主站。
+
+`.env.production` 配置 `VITE_API_BASE_URL=/admin/api`，浏览器始终请求当前站点的 `/admin/api/*`，避免跨域与 HTTPS 混合内容。宝塔需将 `/admin/api/` 反代到 `http://127.0.0.1:8081/admin/api/`，并保留路径前缀。当前 `http://api.starnine.cn/` 不用于生产 Web 请求。
 
 ## 目录
 

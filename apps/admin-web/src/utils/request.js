@@ -9,7 +9,7 @@ export const ApiCode = {
 }
 
 const request = axios.create({
-  baseURL: '/admin/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/admin/api',
   timeout: 15000
 })
 
